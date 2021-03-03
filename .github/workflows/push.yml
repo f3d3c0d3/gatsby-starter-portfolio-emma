@@ -29,5 +29,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION }}
       - name: Deploy
-	run: |
-	  aws s3 sync --delete ./public/ s3://${{ secrets.REGION }}/
+    run: |
+      aws s3 sync --delete ./public/ s3://${{ secrets.REGION }}/
