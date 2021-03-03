@@ -8,7 +8,7 @@ on:
       - prod
 jobs:
   deploy:
-    environment: $(echo ${GITHUB_REF#refs/heads/})
+    environment: $GITHUB_REF
     runs-on: ubuntu-latest
 
     steps:
