@@ -8,8 +8,7 @@ on:
       - prod
 jobs:
   deploy:
-    environment:
-        name: ${{ GITHUB_HEAD_REF }}
+    environment: dev
     runs-on: ubuntu-latest
 
     steps:
