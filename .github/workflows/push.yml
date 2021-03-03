@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     environment:
-        name: ${{ env.GITHUB_REF_SLUG }}
+        name: ${{ GITHUB_HEAD_REF }}
     runs-on: ubuntu-latest
 
     steps:
