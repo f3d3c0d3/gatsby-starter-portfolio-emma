@@ -34,7 +34,7 @@ jobs:
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
 
 
-jobs:
+
   deploy_to_qa:
     environment: qa
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
           aws s3 sync ./public/ s3://${{ secrets.BUCKET }} --delete
           aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
 
-jobs:
+
   deploy_to_prod:
     environment: prod
     runs-on: ubuntu-latest
