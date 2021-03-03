@@ -7,7 +7,7 @@ on:
       - qa
       - prod
 jobs:
-  deploy:
+  deploy_to_dev:
     environment: dev
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/dev'
@@ -31,3 +31,59 @@ jobs:
       - name: Deploy
         run: |
           aws s3 sync ./public/ s3://${{ secrets.BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
+
+
+jobs:
+  deploy_to_qa:
+    environment: qa
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/qa'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.REGION }}
+      - name: Deploy
+        run: |
+          aws s3 sync ./public/ s3://${{ secrets.BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
+
+jobs:
+  deploy_to_prod:
+    environment: prod
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/prod'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Build
+        run: |
+          npm ci
+          npm run build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.REGION }}
+      - name: Deploy
+        run: |
+          aws s3 sync ./public/ s3://${{ secrets.BUCKET }} --delete
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_ID }} --paths "/*"
