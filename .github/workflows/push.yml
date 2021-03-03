@@ -29,7 +29,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.REGION }}
       - name: Deploy
-        uses: jonelantha/gatsby-s3-action@v1
-        with:
-          dest-s3-bucket: ${{ secrets.BUCKET}}
-          cloudfront-id-to-invalidate: ${{ secrets.CLOUDFRONT_ID }}
+	run: |
+	  aws s3 sync --delete ./public/ s3://${{ secrets.REGION }}/
