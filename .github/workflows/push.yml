@@ -10,7 +10,7 @@ jobs:
   deploy:
     environment: dev
     runs-on: ubuntu-latest
-
+    if: github.ref == 'refs/heads/dev'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -30,4 +30,4 @@ jobs:
           aws-region: ${{ secrets.REGION }}
       - name: Deploy
         run: |
-          aws s3 sync ./public/* s3://${{ secrets.REGION }}/ --delete
+          aws s3 sync ./public/ s3://${{ secrets.BUCKET }} --delete
