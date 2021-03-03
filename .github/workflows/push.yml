@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     environment:
-        name: ${GITHUB_REF##*/}
+        name: $(echo ${GITHUB_REF#refs/heads/})
     runs-on: ubuntu-latest
 
     steps:
